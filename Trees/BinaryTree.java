@@ -67,6 +67,49 @@ public class BinarySearchTree {
             postorder(currentNode.right);
         }
     }
+    //method to delete a node in tree
+    void deleteNode(Node current,int value){
+        if(current==null){
+            return;
+        }
+        else if(value<current.data) {
+            deleteNode(current.left,value);
+        }
+        else if(value>current.data){
+            deleteNode(current.right,value);
+        }
+        //we are the node we want to delete
+        else {
+            //case 1 no child nodes
+            if(current.left==null && current.right==null){
+                current=null;
+            }
+            // case 2 1 child
+            else if(current.left==null){
+                current=current.right;
+            }
+            else if(current.right==null){
+                current=current.left
+            }
+            //node has 2 children
+            //swap it with max node in left sub tree or min node in right sub tree
+            else {
+                Node minNode=findMinimum(current.right);
+                current.data=minNode.data;
+                deleteNode(current.right,minNode.data);
+            }
+        }
+    }
+
+
+    //method to find minimum node in tree
+    Node findMinimum(Node current){
+        while(current.left!=null){
+            current=current.left;
+        }
+        System.out.println("\n Minimum is " + current.data);
+        return current;
+    }
 }
 
 class Main{
@@ -85,6 +128,7 @@ class Main{
         //postorder traversal
         System.out.println("\nPostorder Traversal");
         bst.postorder(bst.root);
-
+        bst.findMinimum(bst.root);
+        
     }
 }
